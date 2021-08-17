@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <form action="" id="add">
+                <input type="text" name="name" id="name">
+                <input type="text" name="description" id="description">
+                <input type="submit" name="submit" id="submit">
+            </form>
+        </thead>
+        <tbody id="list">
+        </tbody>
+    </table>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const productlist = async () => {
+            const { data: product } = await axios.get('http://localhost:1000/api/product')
+            const listproduct = product.map((item) => {
+                return `<h4>${item.name}</h4>
+            <h4>${item.description}</h4>
+            `
+            }).join('')
+            document.getElementById('list').innerHTML = listproduct;
+        }
+        productlist();
+
+        const add = document.querySelector('#add')
+
+        add.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const item = {
+                name: document.querySelector('#name').value,
+                description: document.querySelector('#description').value
+            }
+            axios.post('http://localhost:1000/api/product', item)
+        })
+    </script>
+</body>
+
+</html>
